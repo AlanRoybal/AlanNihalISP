@@ -1,3 +1,4 @@
+# Importing API and Libraries
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -27,11 +28,13 @@ def callback(channel):
     ret = assistant.start_conversation()
     print(ret)
 
+# Initializing connection to LEDs
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(PIN_BTN, GPIO.IN, GPIO.PUD_UP)
 GPIO.setup(PIN_LED, GPIO.OUT)
 GPIO.output(PIN_LED, GPIO.LOW)
 
+# Remotely connecting to Google Assistant
 def callback_start_conversation(channel):
     global ASSISTANT
     if not ASSISTANT:

@@ -41,22 +41,29 @@ def callback_start_conversation(channel):
         return
     ASSISTANT.start_conversation()
 
+# Describing each possible event 
 def process_event(event):
+    # Clarifies that Google Assistant is connected and responding
     if event.type == EventType.ON_CONVERSATION_TURN_STARTED:
         print('Google Assistant is listening to you now.')
         GPIO.output(PIN_LED, GPIO.HIGH)
+    # Response following user audio input
     if event.type == EventType.ON_RECOGNIZING_SPEECH_FINISHED:
         print("You:", event.args['text'])
+    # Signaling that response has been received
     if event.type == EventType.ON_ALERT_STARTED:
         print('An alert has started sounding.')
     if event.type == EventType.ON_ALERT_FINISHED:
         print('The alert has finished sounding.')
+    # Google Assistant has received response and is processing it
     if (event.type == EventType.ON_CONVERSATION_TURN_FINISHED and
             event.args and event.args['with_follow_on_turn'] == True):
         #print('Google Assistant is listening to your response.')
         pass
+    # In event of unclear statement
     if event.type == EventType.ON_END_OF_UTTERANCE:
         print('Google Assistant may not have understood what you has said')
+    # Terminates interaction with Google Assistant
     if (event.type == EventType.ON_CONVERSATION_TURN_FINISHED and
             event.args and event.args['with_follow_on_turn'] == False):
         print('Conversation finished.')

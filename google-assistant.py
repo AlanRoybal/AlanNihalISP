@@ -15,16 +15,20 @@ from google.assistant.library import Assistant
 from google.assistant.library.event import EventType
 from google.assistant.library.file_helpers import existing_file
 
+#cheeseboard pin locations
 PIN_BTN = 17
 PIN_LED = 22
 ASSISTANT = None
 
+#checking credentials
 def callback(channel):
     global CREDENTIALS
     if not CREDENTIALS:
         return
     print("callback")
+    #assistant specific to credentials
     assistant = Assistant(CREDENTIALS)
+    #when assistant will talk
     ret = assistant.start_conversation()
     print(ret)
 
@@ -67,6 +71,7 @@ def process_event(event):
     if (event.type == EventType.ON_CONVERSATION_TURN_FINISHED and
             event.args and event.args['with_follow_on_turn'] == False):
         print('Conversation finished.')
+        #causes leds on google home to go off
         GPIO.output(PIN_LED, GPIO.LOW)
 
 def main():

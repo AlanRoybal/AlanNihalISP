@@ -105,6 +105,7 @@ def main():
 if __name__ == '__main__':
     try:
         main()
+    # When event is finished clear the API request handler
     except KeyboardInterrupt:
         print("Google Assistant finised.")
         GPIO.cleanup()

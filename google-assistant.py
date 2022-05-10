@@ -72,8 +72,10 @@ def process_event(event):
 def main():
     global ASSISTANT
 
+    # Creates an argparse that states that argument is required
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawTextHelpFormatter)
+    # Argument needed is the credentials for the API 
     parser.add_argument('--credentials', type=existing_file,
                         metavar='OAUTH2_CREDENTIALS_FILE',
                         default=os.path.join(
@@ -86,9 +88,14 @@ def main():
     with open(args.credentials, 'r') as f:
         credentials = google.oauth2.credentials.Credentials(token=None,
                                                             **json.load(f))
+    # Setting ASSISTANT to be the credential specific assistant
     ASSISTANT = Assistant(credentials)
+    # When assistant is called upon wait 300 ms for response
     GPIO.add_event_detect(PIN_BTN, GPIO.FALLING,
                 callback=callback_start_conversation, bouncetime=300)
+    # If assistant is activated then process the request
+    # Utilizes commands from the API
+    # Events can be any action called for by the user; in our case it is changing the color of the lights
     for event in ASSISTANT.start():
         process_event(event)
 
